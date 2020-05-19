@@ -6,6 +6,10 @@ https://komiyam.hatenadiary.org/entry/20131202/1385992406
 大雑把に言って、平衡二分探索木からinsert,delete,split,mergeなどができないよう制限したのがsegment treeで、
 segment treeの区間[L,R)に対するクエリをL=0に制限したのがbinary indexed treeだと見なすことができます。
 """
+"""
+N = 2 のときは使えない！！
+get(x, N + 1)の処理で index out of range エラーとなる(ABC047-D)
+"""
 
 
 class SegmentTree():

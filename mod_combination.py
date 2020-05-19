@@ -28,8 +28,8 @@ def modCombi(n, r):
         R = modInvFact(r)
     return (N * R * NR) % MOD
 
-# -----------
 
+# -----------
 MOD = 10 ** 9 + 7
 
 

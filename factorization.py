@@ -1,7 +1,9 @@
 from collections import Counter
 
 
+# 素因数分解: Counter({prime: count})
 def factorization(n):
+    from collections import Counter
     arr = Counter()
     temp = n
     for i in range(2, int(-(-n**0.5 // 1)) + 1):
@@ -21,7 +23,7 @@ def factorization(n):
     return arr
 
 
-print(factorization(32400))
+# print(factorization(32400))
 
 
 def prime_factor_table(n):
