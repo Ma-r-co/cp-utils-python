@@ -61,16 +61,42 @@ def f1(n):
 
 
 # エラトステネスの篩
-def sieve(n):
-    is_prime = [1 for _ in range(n + 1)]
-    is_prime[0] = 0
-    is_prime[1] = 0
+# def sieve(n):
+#     is_prime = [1 for _ in range(n + 1)]
+#     is_prime[0] = 0
+#     is_prime[1] = 0
+
+#     for i in range(2, n + 1):
+#         if is_prime[i]:
+#             j = i + i
+#             while j <= n:
+#                 is_prime[j] = 0
+#                 j += i
+
+#     return is_prime
+def create_sieve(n):
+    sieve = [0] * (n + 1)
 
     for i in range(2, n + 1):
-        if is_prime[i]:
-            j = i + i
+        if sieve[i] == 0:
+            j = i ** 2
             while j <= n:
-                is_prime[j] = 0
+                sieve[j] = i
                 j += i
 
-    return is_prime
+    return sieve
+
+
+# 高速素因数分解: Counter({prime: count})
+def fast_factorization(n, sieve):
+    from collections import Counter
+    arr = Counter()
+    while n > 1:
+        p = sieve[n]
+        if p == 0:
+            arr[n] += 1
+            break
+        else:
+            arr[p] += 1
+            n //= p
+    return arr

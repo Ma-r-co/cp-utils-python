@@ -46,3 +46,13 @@ def prepare(n):
         invs[i - 1] = (invs[i] * i) % MOD
 
     return modFacts, invs
+
+
+def comb(n, r):
+    global MOD, modFacts, invs
+    return (modFacts[n] * invs[n - r] * invs[r]) % MOD
+
+
+def perm(n, r):
+    global MOD, modFacts, invs
+    return (modFacts[n] * invs[n - r]) % MOD
