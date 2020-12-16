@@ -51,12 +51,17 @@ class SegmentTree():
     def update(self, i, c):
         i += self.__n
         node = self.__node
+        if node[i] == c:
+            return
         node[i] = c
         while i > 1:
             i //= 2
             node[i] = self.__dot(node[2 * i], node[2 * i + 1])
 
     def get(self, l, r):
+        """
+        区間[l, r)での値を返す. 0-index.
+        """
         vl, vr = self.__e, self.__e
         l += self.__n
         r += self.__n
@@ -70,6 +75,11 @@ class SegmentTree():
                 vr = self.__dot(vr, self.__node[r])
             r //= 2
         return self.__dot(vl, vr)
+    
+    def node(self, i):
+        '''node[i]を返す(0-index)
+        '''
+        return self.__node[i + self.__n]
     
 
 # http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_A
