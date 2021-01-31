@@ -80,7 +80,7 @@ class SegmentTree():
         '''node[i]を返す(0-index)
         '''
         return self.__node[i + self.__n]
-    
+
 
 # http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_A
 def AOJ_DSL_2_A():
