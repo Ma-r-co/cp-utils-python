@@ -8,7 +8,7 @@ segment treeの区間[L,R)に対するクエリをL=0に制限したのがbinary
 """
 """
 N = 2 のときは使えない！！
-get(x, N + 1)の処理で index out of range エラーとなる(ABC047-D)
+get(x, N + 1)の処理で index out of range エラーとなる(ABC047-D) ??
 """
 
 
@@ -27,6 +27,7 @@ class SegmentTree():
     __node: list
         Segment Tree
     """
+
     def __init__(self, A, dot, e):
         """
         Parameters
@@ -47,7 +48,7 @@ class SegmentTree():
             self.__node[i + n] = A[i]
         for i in range(n - 1, 0, -1):
             self.__node[i] = self.__dot(self.__node[2 * i], self.__node[2 * i + 1])
-    
+
     def update(self, i, c):
         i += self.__n
         node = self.__node
@@ -75,7 +76,7 @@ class SegmentTree():
                 vr = self.__dot(vr, self.__node[r])
             r //= 2
         return self.__dot(vl, vr)
-    
+
     def node(self, i):
         '''node[i]を返す(0-index)
         '''
@@ -105,7 +106,7 @@ def AOJ_DSL_2_B():
     e = 0
     A = [e] * n
     seg = SegmentTree(A, add, e)
-    
+
     query = sys.stdin.readlines()
     for i in range(q):
         t, x, y = map(int, query[i].split())
@@ -122,7 +123,7 @@ def ABC125_C():
     from fractions import gcd
     N = int(input())
     A = list(map(int, input().split()))
-    
+
     seg = SegmentTree(A, gcd, 0)
     ans = 0
     for i in range(N):

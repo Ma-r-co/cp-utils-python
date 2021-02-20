@@ -47,10 +47,10 @@ class SegmentTree():
 
 
 class LCA():
-    import sys
-    sys.setrecursionlimit(10 ** 6)
-    
-    def __init__(self, edge):
+    # import sys
+    # sys.setrecursionlimit(10 ** 6)
+
+    def __init__(self, edge, root):
         """
         edge[頂点][移動可能な別頂点]の配列からLCAを求める.
             - eular_tour[i] = (d, v)
@@ -63,26 +63,53 @@ class LCA():
             - euler_tour上で、区間 [pa,pb] 内から、depthが最小となる頂点を取得する
             - そいつがLCAである（このような頂点はただ1つ存在する）
         """
-        self.edge = edge
-        self.N = len(edge)
-        self.eular_tour = []
-        self.first_appear = [None] * self.N
-        self.rank = [-1] * self.N
-        self.__dfs(0, 0)
+        self.edge: list = edge
+        self.N: int = len(edge)
+        self.root: int = root
+        self.eular_tour: list = []
+        self.first_appear: list = [-1] * self.N
+        self.rank: list = [-1] * self.N
+        self.__go_eular_tour(root)
+        # self.__go_eular_tour_dfs(0, root)
         self.__construct_segtree(self.eular_tour, min, (self.N, self.N))
-    
-    def __dfs(self, d, v):
+
+    def __go_eular_tour(self, root):
+        self.parent: list = [-1] * self.N
+        # self.child: list = [[] for _ in range(self.N)]
+        self.parent[root] = root
+        self.rank[root] = 0
+        q = [root]
+        while q:
+            v = q.pop()
+            d = self.rank[v]
+            if self.first_appear[v] == -1:
+                if v != root:
+                    q.append(self.parent[v])
+                self.first_appear[v] = len(self.eular_tour)
+                for nv in self.edge[v]:
+                    if self.rank[nv] < 0:
+                        self.parent[nv] = v
+                        # self.child[v].append(nv)
+                        self.rank[nv] = d + 1
+                        q.append(nv)
+            self.eular_tour.append((d, v))
+
+    def __go_eular_tour_dfs(self, d, v):
+        # self.parent: list = [-1] * self.N
+        # self.child: list = [[] for _ in range(self.N)]
         self.rank[v] = d
         self.first_appear[v] = len(self.eular_tour)
         self.eular_tour.append((d, v))
         for nv in self.edge[v]:
             if self.rank[nv] < 0:
-                self.__dfs(d + 1, nv)
+                # self.parent[nv] = v
+                # self.child[v].append(nv)
+                self.__go_eular_tour_dfs(d + 1, nv)
                 self.eular_tour.append((d, v))
 
     def __construct_segtree(self, E, dot, e):
         self.st = SegmentTree(E, dot, e)
-    
+
     def get_lca(self, i, j):
         """頂点i, jのLCAおよびその深さを返す
         return d, v
@@ -107,6 +134,7 @@ class LCA():
 
 
 def solve():
+    from random import randint
     """
     Verify: https://atcoder.jp/contests/abc014/tasks/abc014_4
     """
@@ -119,7 +147,8 @@ def solve():
     Q = int(input())
     query = [tuple(map(lambda x: int(x) - 1, input().split())) for _ in range(Q)]
 
-    lca = LCA(edge)
+    root = randint(0, N - 1)
+    lca = LCA(edge, root)
     for a, b in query:
         l = lca.get_distance(a, b)
         print(l + 1)

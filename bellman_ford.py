@@ -13,3 +13,8 @@ for i in range(N - 1):
     for j in range(M):
         a, b, c = edge[j]
         path[b] = min(path[b], path[a] + c)
+
+# N回目にも更新が発生した場合、負の閉路が存在する。
+for j in range(M):
+    a, b, c = edge[j]
+    path[b] = min(path[b], path[a] + c)

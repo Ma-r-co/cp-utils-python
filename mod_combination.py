@@ -34,17 +34,21 @@ MOD = 10 ** 9 + 7
 
 
 def prepare(n):
+    '''
+    n <= MOD
+    '''
     global MOD
+    if n > MOD:
+        raise Exception("n must be equal to or less than MOD: (n, MOD) = ({0}, {1})".format(n, MOD))
     modFacts = [0] * (n + 1)
     modFacts[0] = 1
     for i in range(n):
         modFacts[i + 1] = (modFacts[i] * (i + 1)) % MOD
-
     invs = [1] * (n + 1)
     invs[n] = pow(modFacts[n], MOD - 2, MOD)
-    for i in range(n, 1, -1):
+    invs[n - 1] = pow(modFacts[n - 1], MOD - 2, MOD)
+    for i in range(n - 1, 1, -1):
         invs[i - 1] = (invs[i] * i) % MOD
-
     return modFacts, invs
 
 

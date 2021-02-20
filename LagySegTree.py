@@ -26,6 +26,7 @@ class LazySegmentTree():
     __node: list
         Segment Tree
     """
+
     def __init__(self, A, dot, e):
         """
         Parameters
@@ -49,7 +50,7 @@ class LazySegmentTree():
             self.__node[i + n] = A[i]
         for i in range(n - 1, 0, -1):
             self.__node[i] = self.__dot(self.__node[2 * i], self.__node[2 * i + 1])
-    
+
     def gindex(self, l, r):
         L = (l + self.__n) >> 1
         R = (r + self.__n) >> 1
@@ -71,7 +72,7 @@ class LazySegmentTree():
                 continue
             lazy[2 * i] = node[2 * i] = lazy[2 * i + 1] = node[2 * i + 1] = v
             lazy[i] = None
-            
+
     def update(self, l, r, x):
         """
         区間[l, r)をxで更新
@@ -114,7 +115,7 @@ class LazySegmentTree():
                 vr = self.__dot(vr, self.__node[r])
             r //= 2
         return self.__dot(vl, vr)
-    
+
 
 # http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_A
 def AOJ_DSL_2_A():
@@ -139,7 +140,7 @@ def AOJ_DSL_2_B():
     e = 0
     A = [e] * n
     seg = LazySegmentTree(A, add, e)
-    
+
     query = sys.stdin.readlines()
     for i in range(q):
         t, x, y = map(int, query[i].split())
@@ -156,7 +157,7 @@ def ABC125_C():
     from fractions import gcd
     N = int(input())
     A = list(map(int, input().split()))
-    
+
     seg = LazySegmentTree(A, gcd, 0)
     ans = 0
     for i in range(N):

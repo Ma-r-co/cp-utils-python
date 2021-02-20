@@ -7,6 +7,7 @@ class TravellingSalesman():
     solve_oneway(start):
         startから出発してすべての都市を周るまでの最小コスト
     '''
+
     def __init__(self, N: int, dist: list):
         '''
         N: 都市の数
@@ -16,7 +17,7 @@ class TravellingSalesman():
         self.dist: list = dist
         self.oneway_answer: list = [-1] * N
         self.roundtrip_answer: list = [-1] * N
-    
+
     def solve_oneway(self, start: int):
         if self.oneway_answer[start] == -1:
             self._solve_oneway()
@@ -68,6 +69,8 @@ class TravellingSalesman():
 Validation - solve_oneway
 ABC190-E
 '''
+
+
 def solve_ABC190_E():
     import sys
     from collections import deque
@@ -114,11 +117,14 @@ def solve_ABC190_E():
     ans = cnt + 1 if cnt < (1 << 64) else -1
     print(ans)
 
+
 # -------------------------------------------------------------------
 '''
 Validation - solve_roundtrip
 ABC180-E
 '''
+
+
 def solve_ABC180_E():
     import random
     random.seed()
