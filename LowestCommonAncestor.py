@@ -1,8 +1,9 @@
 """
-# 最小共通祖先 (Least Common Ancestor)
+# 最小共通祖先 (Lowest Common Ancestor)
 
 ## 参考
 https://ikatakos.com/pot/programming_algorithm/graph_theory/lowest_common_ancestor
+https://ei1333.github.io/luzhiled/snippets/tree/doubling-lowest-common-ancestor.html
 
 ## 考え方
 求め方は複数のアルゴリズム・実装が知られているが、本プログラムでは Euler Tour + RMQ を使用する.
@@ -46,12 +47,14 @@ class SegmentTree():
         return self.__dot(vl, vr)
 
 
-class LCA():
-    # import sys
-    # sys.setrecursionlimit(10 ** 6)
+class EulerTourLowestCommonAncestor():
+    """Calculates LCA by Euler Tour
 
-    def __init__(self, edge, root):
-        """
+    Methods:
+        get_lca(i, j)      : Returns LCA and its depth
+        get_distance(i, j) : Returns distance btwn i <> j
+
+    Notes:
         edge[頂点][移動可能な別頂点]の配列からLCAを求める.
             - eular_tour[i] = (d, v)
                 i番目に通りかかる頂点の（深さ, 頂点番号）
@@ -62,7 +65,11 @@ class LCA():
                 - pa < pb と仮定する
             - euler_tour上で、区間 [pa,pb] 内から、depthが最小となる頂点を取得する
             - そいつがLCAである（このような頂点はただ1つ存在する）
-        """
+    """
+    # import sys
+    # sys.setrecursionlimit(10 ** 6)
+
+    def __init__(self, edge, root):
         self.edge: list = edge
         self.N: int = len(edge)
         self.root: int = root
@@ -110,23 +117,35 @@ class LCA():
     def __construct_segtree(self, E, dot, e):
         self.st = SegmentTree(E, dot, e)
 
-    def get_lca(self, i, j):
-        """頂点i, jのLCAおよびその深さを返す
-        return d, v
-         - d: 深さ, v: LCA
+    def get_lca(self, i: int, j: int):
+        """Returns LCA and its rank
+
+        Args:
+            i (int): Vertex
+            j (int): Vertex
+
+        Returns:
+            int: LCA
+            int: Rank of LCA
         """
         l = self.first_appear[i]
         r = self.first_appear[j]
         if l > r:
             l, r = r, l
         d, v = self.st.get(l, r + 1)
-        return d, v
+        return v, d
 
-    def get_distance(self, i, j):
-        """頂点i, j間の距離を返す
-        return l
+    def get_distance(self, i: int, j: int):
+        """Returns distance btwn i <> j
+
+        Args:
+            i (int): vertex
+            j (int): vertex
+
+        Returns:
+            int: Distance btwn i <> j
         """
-        d, v = self.get_lca(i, j)
+        v, d = self.get_lca(i, j)
         di = self.rank[i]
         dj = self.rank[j]
         distance = abs(d - di) + abs(d - dj)
@@ -148,7 +167,7 @@ def solve():
     query = [tuple(map(lambda x: int(x) - 1, input().split())) for _ in range(Q)]
 
     root = randint(0, N - 1)
-    lca = LCA(edge, root)
+    lca = EulerTourLowestCommonAncestor(edge, root)
     for a, b in query:
         l = lca.get_distance(a, b)
         print(l + 1)
